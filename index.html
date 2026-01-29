@@ -11,20 +11,21 @@
     <style>
         /* CSS Reset & Base */
         :root {
-            --primary: #7c3aed;
+            --primary: #6d28d9;
             --primary-dark: #5b21b6;
             --accent: #f59e0b;
             --accent-dark: #d97706;
             --success: #10b981;
-            --black: #000000;
+            --black: #0a0a0a;
+            --gray-950: #030712;
             --gray-900: #111827;
             --gray-800: #1f2937;
             --white: #ffffff;
             --text-primary: #f9fafb;
-            --text-secondary: #e5e7eb;
+            --text-secondary: #d1d5db;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8);
-            --glow: 0 0 20px rgba(124, 58, 237, 0.3);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.9);
+            --glow: 0 0 25px rgba(109, 40, 217, 0.3);
             --radius: 16px;
             --radius-sm: 8px;
         }
@@ -42,7 +43,7 @@
 
         body {
             font-family: 'Cairo', sans-serif;
-            background: linear-gradient(135deg, #000000 0%, #1a0b2e 50%, #0c1a3a 100%);
+            background: linear-gradient(135deg, #0a0a0a 0%, #12082e 60%, #0c1a3a 100%);
             color: var(--text-primary);
             line-height: 1.6;
             min-height: 100vh;
@@ -77,7 +78,7 @@
 
         .floating-icon {
             position: absolute;
-            opacity: 0.15;
+            opacity: 0.1;
             font-size: 24px;
             color: var(--primary);
             animation: float 20s infinite linear;
@@ -112,8 +113,8 @@
             width: 100%;
             height: 100%;
             background-image: 
-                linear-gradient(rgba(124, 58, 237, 0.08) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(124, 58, 237, 0.08) 1px, transparent 1px);
+                linear-gradient(rgba(109, 40, 217, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(109, 40, 217, 0.05) 1px, transparent 1px);
             background-size: 60px 60px;
             z-index: -2;
         }
@@ -145,11 +146,11 @@
         header {
             padding: 20px 0;
             position: relative;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.85);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
             position: sticky;
             top: 0;
             z-index: 1000;
@@ -173,7 +174,7 @@
         .logo-icon {
             width: 45px;
             height: 45px;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             border-radius: var(--radius-sm);
             display: flex;
             align-items: center;
@@ -186,6 +187,17 @@
             flex-shrink: 0;
         }
 
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: var(--shadow), 0 0 20px rgba(109, 40, 217, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: var(--shadow), 0 0 40px rgba(109, 40, 217, 0.6);
+                transform: scale(1.05);
+            }
+        }
+
         .logo-text h1 {
             font-size: 1.8rem;
             font-weight: 900;
@@ -193,23 +205,16 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 2px 10px rgba(124, 58, 237, 0.2);
+            text-shadow: 0 2px 10px rgba(109, 40, 217, 0.3);
         }
-.version-btn.mobile-btn.fade-in.delay-1{
-            margin-bottom: 20px;
-            width: 50%;margin-left: auto  ;margin-right: auto;
-        }
-.version-btn.desktop-btn.fade-in.delay-2{
-            margin-bottom: 20px;
-            width: 50%;margin-left: auto  ;margin-right: auto;
-        }
+
         .lang-toggle {
             display: flex;
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.07);
             border-radius: 50px;
             padding: 4px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             flex-shrink: 0;
         }
 
@@ -231,7 +236,12 @@
         .lang-btn.active {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: var(--white);
-            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 4px 15px rgba(109, 40, 217, 0.4);
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.1);
+            color: var(--white);
         }
 
         @media (max-width: 768px) {
@@ -282,6 +292,17 @@
             overflow: hidden;
         }
 
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(109, 40, 217, 0.08) 0%, transparent 70%);
+            z-index: -1;
+        }
+
         .hero h2 {
             font-size: 2.8rem;
             font-weight: 900;
@@ -298,6 +319,26 @@
             padding: 0 10px;
         }
 
+        @keyframes textGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+            }
+            100% {
+                text-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
+            }
+        }
+
+        .hero h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 25%;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            border-radius: 3px;
+        }
+
         .hero-subtitle {
             font-size: 1.2rem;
             color: var(--text-secondary);
@@ -310,7 +351,7 @@
             border-radius: var(--radius);
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         @media (max-width: 992px) {
@@ -385,11 +426,27 @@
             min-height: 80px;
         }
 
+        .version-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.6s;
+            z-index: -1;
+        }
+
+        .version-btn:hover::before {
+            left: 100%;
+        }
+
         .mobile-btn {
             background: linear-gradient(135deg, var(--primary), var(--primary-dark));
             color: var(--white);
-            box-shadow: var(--shadow), 0 10px 30px rgba(124, 58, 237, 0.4);
-            border: 2px solid rgba(124, 58, 237, 0.4);
+            box-shadow: var(--shadow), 0 10px 30px rgba(109, 40, 217, 0.4);
+            border: 2px solid rgba(109, 40, 217, 0.4);
         }
 
         .desktop-btn {
@@ -397,6 +454,24 @@
             color: var(--white);
             box-shadow: var(--shadow), 0 10px 30px rgba(245, 158, 11, 0.4);
             border: 2px solid rgba(245, 158, 11, 0.4);
+        }
+
+        .version-btn:hover {
+            transform: translateY(-12px) scale(1.05);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.9);
+        }
+
+        .version-btn:active {
+            transform: translateY(-5px) scale(1.02);
+        }
+
+        .version-btn i {
+            font-size: 1.8rem;
+            transition: var(--transition);
+        }
+
+        .version-btn:hover i {
+            transform: scale(1.2);
         }
 
         .badge {
@@ -413,6 +488,15 @@
             box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
             animation: badgePulse 2s infinite;
             white-space: nowrap;
+        }
+
+        @keyframes badgePulse {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                box-shadow: 0 5px 25px rgba(16, 185, 129, 0.8);
+            }
         }
 
         @media (max-width: 768px) {
@@ -462,6 +546,17 @@
             position: relative;
         }
 
+        .icons-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(109, 40, 217, 0.05), transparent);
+            z-index: -1;
+        }
+
         .section-title {
             text-align: center;
             font-size: 2.5rem;
@@ -493,16 +588,56 @@
         }
 
         .icon-card {
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
             border-radius: var(--radius);
             padding: 40px 25px;
             text-align: center;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             transition: var(--transition);
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+        }
+
+        .icon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.1), rgba(245, 158, 11, 0.05));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: -1;
+        }
+
+        .icon-card:hover::before {
+            opacity: 1;
+        }
+
+        .icon-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: var(--transition);
+            transform-origin: left;
+        }
+
+        .icon-card:hover::after {
+            transform: scaleX(1);
+        }
+
+        .icon-card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.7);
+            border-color: rgba(109, 40, 217, 0.3);
         }
 
         .icon-wrapper {
@@ -516,8 +651,13 @@
             justify-content: center;
             font-size: 36px;
             color: var(--white);
-            box-shadow: 0 15px 30px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 15px 30px rgba(109, 40, 217, 0.4);
             transition: var(--transition);
+        }
+
+        .icon-card:hover .icon-wrapper {
+            transform: scale(1.1) rotate(10deg);
+            box-shadow: 0 20px 40px rgba(109, 40, 217, 0.6);
         }
 
         .icon-card h3 {
@@ -608,139 +748,27 @@
             }
         }
 
-        /* CTA Section - متجاوب للجوال */
-        .cta-section {
-            padding: 60px 0;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(124, 58, 237, 0.1), rgba(245, 158, 11, 0.1));
-            border-radius: var(--radius);
-            margin: 40px 20px;
-            position: relative;
-            overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .cta-section h3 {
-            font-size: 2rem;
-            font-weight: 900;
-            margin-bottom: 20px;
-            color: var(--white);
-            padding: 0 15px;
-        }
-
-        .cta-section p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 0 15px;
-            line-height: 1.6;
-        }
-
-        .cta-buttons {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            padding: 0 15px;
-        }
-
-        .cta-btn {
-            padding: 18px 30px;
-            font-size: 1.1rem;
-            font-weight: 800;
-            border: none;
-            border-radius: var(--radius);
-            cursor: pointer;
-            transition: var(--transition);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            text-decoration: none;
-            position: relative;
-            overflow: hidden;
-            min-height: 60px;
-            justify-content: center;
-            flex: 1;
-            min-width: 200px;
-            max-width: 300px;
-        }
-
-        .cta-btn-primary {
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: var(--white);
-            box-shadow: 0 10px 25px rgba(124, 58, 237, 0.4);
-        }
-
-        .cta-btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: var(--white);
-            border: 2px solid rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(10px);
-        }
-
-        @media (max-width: 768px) {
-            .cta-section {
-                padding: 50px 0;
-                margin: 30px 15px;
-            }
-            
-            .cta-section h3 {
-                font-size: 1.8rem;
-            }
-            
-            .cta-section p {
-                font-size: 1rem;
-                margin-bottom: 30px;
-            }
-            
-            .cta-buttons {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-            }
-            
-            .cta-btn {
-                width: 100%;
-                max-width: 100%;
-                padding: 16px 20px;
-                font-size: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .cta-section {
-                padding: 40px 0;
-                margin: 20px 10px;
-            }
-            
-            .cta-section h3 {
-                font-size: 1.6rem;
-            }
-            
-            .cta-section p {
-                font-size: 0.95rem;
-            }
-            
-            .cta-btn {
-                padding: 14px 18px;
-                font-size: 0.95rem;
-                min-height: 55px;
-            }
-        }
-
         /* Contact Section - متجاوب للجوال */
         .contact {
             padding: 80px 0;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(26, 11, 46, 0.7));
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.8), rgba(26, 11, 46, 0.8));
             border-radius: var(--radius);
             margin: 50px 20px;
             position: relative;
             overflow: hidden;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+        }
+
+        .contact::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(245, 158, 11, 0.04) 0%, transparent 70%);
+            z-index: -1;
         }
 
         .contact-links {
@@ -755,16 +783,39 @@
             align-items: center;
             gap: 20px;
             padding: 25px;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.01));
             border-radius: var(--radius);
             text-decoration: none;
             color: var(--text-primary);
             transition: var(--transition);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.08);
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
+        }
+
+        .contact-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(109, 40, 217, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: 0.8s;
+        }
+
+        .contact-link:hover::before {
+            transform: translateX(100%);
+        }
+
+        .contact-link:hover {
+            background: linear-gradient(135deg, rgba(109, 40, 217, 0.15), rgba(109, 40, 217, 0.05));
+            border-color: var(--primary);
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow);
         }
 
         .contact-icon {
@@ -779,7 +830,22 @@
             color: var(--white);
             flex-shrink: 0;
             transition: var(--transition);
-            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.4);
+            box-shadow: 0 10px 20px rgba(109, 40, 217, 0.4);
+            animation: bounce 3s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .contact-link:hover .contact-icon {
+            transform: scale(1.1) rotate(15deg);
+            box-shadow: 0 15px 30px rgba(109, 40, 217, 0.6);
         }
 
         .contact-info h3 {
@@ -865,13 +931,24 @@
 
         /* Footer - متجاوب للجوال */
         footer {
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.9), rgba(26, 11, 46, 0.9));
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.95), rgba(26, 11, 46, 0.95));
             padding: 60px 0;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
             text-align: center;
             margin-top: 60px;
             position: relative;
             overflow: hidden;
+        }
+
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(109, 40, 217, 0.05), transparent);
+            z-index: -1;
         }
 
         .footer-brand {
@@ -882,7 +959,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 5px 20px rgba(124, 58, 237, 0.3);
+            text-shadow: 0 5px 20px rgba(109, 40, 217, 0.3);
             animation: textGlow 4s infinite alternate;
             padding: 0 15px;
         }
@@ -943,7 +1020,7 @@
             font-size: 24px;
             cursor: pointer;
             z-index: 1001;
-            box-shadow: 0 10px 30px rgba(124, 58, 237, 0.5);
+            box-shadow: 0 10px 30px rgba(109, 40, 217, 0.5);
             transition: var(--transition);
         }
 
@@ -964,11 +1041,11 @@
             position: fixed;
             bottom: 90px;
             right: 20px;
-            background: rgba(0, 0, 0, 0.95);
+            background: rgba(10, 10, 10, 0.98);
             backdrop-filter: blur(20px);
             border-radius: var(--radius);
             padding: 20px;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.1);
             z-index: 1000;
             display: none;
@@ -982,23 +1059,6 @@
             animation: slideUp 0.3s ease-out;
         }
 
-        .mobile-nav a {
-            color: var(--text-primary);
-            text-decoration: none;
-            padding: 15px;
-            border-radius: var(--radius-sm);
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            transition: var(--transition);
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .mobile-nav a:hover {
-            background: rgba(124, 58, 237, 0.2);
-            transform: translateX(-5px);
-        }
-
         @keyframes slideUp {
             from {
                 opacity: 0;
@@ -1009,14 +1069,40 @@
                 transform: translateY(0);
             }
         }
+        .version-btn.mobile-btn.fade-in.delay-1{
+        width: 70%;margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        }
+        .version-btn.desktop-btn.fade-in.delay-2{
+        width: 70%;margin-bottom: 20px;
+        margin-left: auto;
+        margin-right: auto;
+        }
+        .mobile-nav a {
+            color: var(--text-primary);
+            text-decoration: none;
+            padding: 15px;
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: var(--transition);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .mobile-nav a:hover {
+            background: rgba(109, 40, 217, 0.2);
+            transform: translateX(-5px);
+        }
 
         /* Touch-friendly button sizes */
-        button, .cta-btn, .contact-link, .version-btn {
+        button, .contact-link, .version-btn {
             min-height: 44px; /* الحد الأدنى لللمس حسب إرشادات Apple */
         }
 
         @media (max-width: 768px) {
-            button, .cta-btn, .contact-link, .version-btn {
+            button, .contact-link, .version-btn {
                 min-height: 48px;
             }
         }
@@ -1106,7 +1192,7 @@
         }
 
         ::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.3);
         }
 
         ::-webkit-scrollbar-thumb {
@@ -1200,24 +1286,6 @@
         </div>
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section fade-in delay-2">
-        <div class="container">
-            <h3 class="lang-element" data-en="Ready to Boost Your Productivity?" data-ar="جاهز ترفع إنتاجيتك؟">جاهز ترفع إنتاجيتك؟</h3>
-            <p class="lang-element" data-en="Join thousands of students who improved their study habits with Study Mode" data-ar="انضم لآلاف الطلاب اللي حسنوا عاداتهم الدراسية مع Study Mode">انضم لآلاف الطلاب اللي حسنوا عاداتهم الدراسية مع Study Mode</p>
-            <div class="cta-buttons">
-                <a href="https://karzocode.github.io/FOCUS_MOOD/" class="cta-btn cta-btn-primary" target="_blank" rel="noopener noreferrer">
-                    <i class="fas fa-rocket"></i>
-                    <span class="lang-element" data-en="Start Now - Desktop" data-ar="ابدأ الآن - نسخة الكمبيوتر">ابدأ الآن - نسخة الكمبيوتر</span>
-                </a>
-                <a href="#" class="cta-btn cta-btn-secondary" id="mobile-cta">
-                    <i class="fas fa-download"></i>
-                    <span class="lang-element" data-en="Download Mobile App" data-ar="حمل تطبيق الموبايل">حمل تطبيق الموبايل</span>
-                </a>
-            </div>
-        </div>
-    </section>
-
     <!-- Contact Section -->
     <section class="contact">
         <div class="container">
@@ -1294,10 +1362,6 @@
             <i class="fas fa-envelope"></i>
             <span class="lang-element" data-en="Contact" data-ar="تواصل">تواصل</span>
         </a>
-        <a href="#" id="mobile-nav-download" class="mobile-nav-link">
-            <i class="fas fa-download"></i>
-            <span class="lang-element" data-en="Download" data-ar="تحميل">تحميل</span>
-        </a>
     </div>
 
     <script>
@@ -1322,7 +1386,7 @@
                 icon.style.left = `${Math.random() * 100}%`;
                 icon.style.fontSize = `${Math.random() * 20 + 12}px`;
                 icon.style.animationDelay = `${Math.random() * 15}s`;
-                icon.style.opacity = `${Math.random() * 0.15 + 0.05}`;
+                icon.style.opacity = `${Math.random() * 0.1 + 0.05}`;
                 
                 background.appendChild(icon);
             }
@@ -1390,22 +1454,19 @@
             // Version Buttons Functionality - تفتح في تبويب جديد
             const mobileBtn = document.getElementById('mobile-btn');
             const desktopBtn = document.getElementById('desktop-btn');
-            const mobileCta = document.getElementById('mobile-cta');
-            const mobileNavDownload = document.getElementById('mobile-nav-download');
             
-            // Mobile Version Button
+            // Mobile Version Button - رابط النسخة المتنقلة
             mobileBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-                // يمكنك تغيير الرابط هنا عندما يصبح جاهزًا
-                const mobileUrl = 'https://example.com/mobile-version'; // رابط مؤقت
+                const mobileUrl = 'https://karzocode.github.io/FOCUSMOOD_MOBILE/';
                 
                 // فتح في تبويب جديد
                 window.open(mobileUrl, '_blank', 'noopener,noreferrer');
                 
                 // إشعار للمستخدم
                 const msg = document.body.dir === 'rtl' ? 
-                    'نسخة الهاتف قريباً...' : 
-                    'Mobile version coming soon...';
+                    'يتم فتح نسخة الهاتف...' : 
+                    'Opening mobile version...';
                 showNotification(msg);
             });
             
@@ -1420,40 +1481,9 @@
                 
                 // إشعار للمستخدم
                 const msg = document.body.dir === 'rtl' ? 
-                    'يتم فتح نسخة الكمبيوتر' : 
-                    'Opening desktop version';
+                    'يتم فتح نسخة الكمبيوتر...' : 
+                    'Opening desktop version...';
                 showNotification(msg);
-            });
-            
-            // Mobile CTA Button
-            mobileCta.addEventListener('click', function(e) {
-                e.preventDefault();
-                //ا
-                const mobileUrl = 'https://karzocode.github.io/FOCUSMOOD_MOBILE/'; // رابط مؤقت
-                
-                // فتح في تبويب جديد
-                window.open(mobileUrl, '_blank', 'noopener,noreferrer');
-                
-                // إشعار للمستخدم
-                const msg = document.body.dir === 'rtl' ? 
-                    'تطبيق الهاتف قريباً...' : 
-                    'Mobile app coming soon...';
-                showNotification(msg);
-            });
-            
-            // Mobile Navigation Download Button
-            mobileNavDownload.addEventListener('click', function(e) {
-                e.preventDefault();
-                const mobileUrl = 'https://example.com/mobile-app';
-                window.open(mobileUrl, '_blank', 'noopener,noreferrer');
-                
-                const msg = document.body.dir === 'rtl' ? 
-                    'تطبيق الهاتف قريباً...' : 
-                    'Mobile app coming soon...';
-                showNotification(msg);
-                
-                // إغلاق القائمة المتنقلة
-                mobileNav.classList.remove('active');
             });
             
             // Mobile Menu Toggle
@@ -1517,11 +1547,11 @@
                     border-radius: var(--radius-sm);
                     font-weight: 700;
                     z-index: 10000;
-                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+                    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
                     animation: slideIn 0.3s ease-out;
                     max-width: 300px;
                     text-align: center;
-                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    border: 1px solid rgba(255, 255, 255, 0.15);
                     font-size: 0.9rem;
                 `;
                 
@@ -1535,7 +1565,7 @@
                 
                 document.body.appendChild(notification);
                 
-                // إخفاء الإشعار بعد 3 ثواني
+                // إخفاء الإشعار بعد 2 ثواني
                 setTimeout(() => {
                     notification.style.animation = 'slideOut 0.3s ease-out';
                     setTimeout(() => {
@@ -1543,7 +1573,7 @@
                             notification.remove();
                         }
                     }, 300);
-                }, 3000);
+                }, 2000);
             }
             
             // Add scroll animation
@@ -1609,37 +1639,6 @@
                         opacity: 0;
                     }
                 }
-                
-                @keyframes badgePulse {
-                    0%, 100% {
-                        box-shadow: 0 5px 15px rgba(16, 185, 129, 0.4);
-                    }
-                    50% {
-                        box-shadow: 0 5px 25px rgba(16, 185, 129, 0.8);
-                    }
-                }
-                
-                @keyframes textGlow {
-                    0% {
-                        text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
-                    }
-                    100% {
-                        text-shadow: 0 0 30px rgba(245, 158, 11, 0.7);
-                    }
-                }
-                
-                .contact-icon {
-                    animation: bounce 3s infinite;
-                }
-                
-                @keyframes bounce {
-                    0%, 100% {
-                        transform: translateY(0);
-                    }
-                    50% {
-                        transform: translateY(-10px);
-                    }
-                }
             `;
             document.head.appendChild(style);
             
@@ -1683,4 +1682,3 @@
     </script>
 </body>
 </html>
-
