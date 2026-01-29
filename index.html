@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Mode - Karzo Code</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset & Base */
+        :root {
+            --primary: #7c3aed;
+            --primary-dark: #5b21b6;
+            --accent: #f59e0b;
+            --success: #10b981;
+            --black: #000000;
+            --gray-900: #111827;
+            --gray-800: #1f2937;
+            --white: #ffffff;
+            --text-primary: #f9fafb;
+            --text-secondary: #e5e7eb;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.8);
+            --glow: 0 0 20px rgba(124, 58, 237, 0.3);
+            --radius: 16px;
+            --radius-sm: 8px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: var(--black);
+            color: var(--text-primary);
+            line-height: 1.7;
+            min-height: 100vh;
+            direction: rtl;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated Background */
+        .background-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .floating-icon {
+            position: absolute;
+            opacity: 0.1;
+            font-size: 24px;
+            color: var(--primary);
+            animation: float 20s infinite linear;
+        }
+
+        .floating-icon:nth-child(2n) {
+            color: var(--accent);
+            animation-duration: 25s;
+            animation-direction: reverse;
+        }
+
+        .floating-icon:nth-child(3n) {
+            color: var(--success);
+            animation-duration: 30s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+            }
+            100% {
+                transform: translateY(-100vh) rotate(360deg);
+            }
+        }
+
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(124, 58, 237, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(124, 58, 237, 0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -2;
+        }
+
+        body[dir="ltr"] {
+            direction: ltr;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .arabic-text {
+            font-weight: 800;
+            color: var(--white);
+            line-height: 1.8;
+        }
+
+        body[dir="ltr"] .arabic-text {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* Header & Language Toggle */
+        header {
+            padding: 30px 0;
+            position: relative;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border-radius: var(--radius-sm);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--white);
+            box-shadow: var(--shadow), var(--glow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: var(--shadow), 0 0 20px rgba(124, 58, 237, 0.3);
+            }
+            50% {
+                box-shadow: var(--shadow), 0 0 40px rgba(124, 58, 237, 0.6);
+            }
+        }
+
+        .logo-text h1 {
+            font-size: 28px;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .lang-toggle {
+            display: flex;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            padding: 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .lang-btn {
+            padding: 12px 28px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 16px;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .lang-btn.active {
+            background: var(--primary);
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(124, 58, 237, 0.4);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 80px 0 60px;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero h2 {
+            font-size: 3.5rem;
+            font-weight: 900;
+            margin-bottom: 24px;
+            line-height: 1.2;
+            background: linear-gradient(90deg, var(--white), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 3s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% {
+                text-shadow: 0 0 10px rgba(245, 158, 11, 0.3);
+            }
+            100% {
+                text-shadow: 0 0 20px rgba(245, 158, 11, 0.6);
+            }
+        }
+
+        .hero-subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            max-width: 900px;
+            margin: 0 auto 60px;
+            opacity: 0.9;
+        }
+
+        /* Main Buttons Section */
+        .version-buttons {
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .version-btn {
+            padding: 22px 40px;
+            font-size: 1.2rem;
+            font-weight: 800;
+            border: none;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            min-width: 280px;
+            justify-content: center;
+            font-family: 'Cairo', sans-serif;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .version-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+
+        .version-btn:hover::before {
+            left: 100%;
+        }
+
+        .mobile-btn {
+        margin-bottom: 19px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            box-shadow: var(--shadow);
+            width: 40%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .desktop-btn {
+            background: linear-gradient(135deg, var(--accent), #d97706);
+            margin-left: auto;
+            margin-right: auto;
+            width: 40%;
+            color: var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .version-btn:hover {
+            transform: translateY(-8px) scale(1.05);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .version-btn i {
+            font-size: 1.5rem;
+        }
+
+        /* Icons Section */
+        .icons-section {
+            padding: 80px 0;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 50px;
+            color: var(--white);
+        }
+
+        .icons-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .icon-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            padding: 40px 30px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .icon-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: var(--transition);
+            transform-origin: left;
+        }
+
+        .icon-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .icon-card:hover {
+            background: rgba(124, 58, 237, 0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+        .icon-wrapper {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+            color: var(--white);
+            box-shadow: 0 10px 20px rgba(124, 58, 237, 0.4);
+        }
+
+        .icon-card h3 {
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--white);
+        }
+
+        .icon-card p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 80px 0;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: var(--radius);
+            margin: 40px 24px;
+        }
+
+        .contact-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 50px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius);
+            text-decoration: none;
+            color: var(--text-primary);
+            transition: var(--transition);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent, rgba(124, 58, 237, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: 0.6s;
+        }
+
+        .contact-link:hover::before {
+            transform: translateX(100%);
+        }
+
+        .contact-link:hover {
+            background: rgba(124, 58, 237, 0.1);
+            border-color: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: var(--shadow);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: var(--white);
+            flex-shrink: 0;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        .contact-info h3 {
+            font-size: 1.3rem;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .contact-info p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 50px 0;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+            margin-top: 60px;
+            position: relative;
+        }
+
+        .footer-brand {
+            font-size: 2.2rem;
+            font-weight: 900;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, var(--accent), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .footer-copyright {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1.1rem;
+                padding: 0 15px;
+            }
+            
+            .section-title {
+                font-size: 2rem;
+            }
+            
+            .version-btn {
+                min-width: 100%;
+                padding: 20px 30px;
+                font-size: 1.1rem;
+            }
+            
+            .version-buttons {
+                padding: 20px;
+                gap: 20px;
+            }
+            
+            .contact {
+                margin: 20px 15px;
+                padding: 40px 20px;
+            }
+            
+            .contact-links {
+                grid-template-columns: 1fr;
+            }
+            
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+                gap: 25px;
+            }
+            
+            .icons-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+            
+            .footer-brand {
+                font-size: 1.8rem;
+            }
+            
+            .lang-btn {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
+            
+            .icon-card {
+                padding: 30px 20px;
+            }
+        }
+
+        /* Animation Classes */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+
+        .delay-3 {
+            animation-delay: 0.6s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="background-animation" id="backgroundAnimation"></div>
+    <div class="grid-pattern"></div>
+
+    <!-- Header Section -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <div class="logo-text">
+                    <h1 class="lang-element" data-en="Study Mode" data-ar="Study Mode">Study Mode</h1>
+                </div>
+            </div>
+            
+            <div class="lang-toggle">
+                <button class="lang-btn active" id="lang-ar">العربية</button>
+                <button class="lang-btn" id="lang-en">English</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h2 class="lang-element fade-in" data-en="Welcome to Study Mode" data-ar="أهلا بيك في Study Mode">أهلا بيك في Study Mode</h2>
+            <p class="hero-subtitle lang-element fade-in delay-1" data-en="The ultimate focus & study experience with Pomodoro timer and cognitive mode for maximum concentration" data-ar="أقوى تجربة تركيز ومذاكرة، مع مؤقت Pomodoro وموود نفسي يرفع تركيزك">أقوى تجربة تركيز ومذاكرة، مع مؤقت Pomodoro وموود نفسي يرفع تركيزك</p>
+        </div>
+    </section>
+
+    <!-- Version Buttons Section -->
+    <section class="version-buttons">
+        <div class="container">
+            <a href="#" class="version-btn mobile-btn fade-in delay-1" id="mobile-version">
+                <i class="fas fa-mobile-alt"></i>
+                <span class="lang-element" data-en="Mobile Version (COMING SOON)" data-ar="Mobile Version (COMING SOON)">نسخة الهاتف</span>
+            </a>
+            <a href="https://karzocode.github.io/FOCUS_MOOD/" class="version-btn desktop-btn fade-in delay-2" id="desktop-version">
+                <i class="fas fa-desktop"></i>
+                <span class="lang-element" data-en="Desktop Version" data-ar="نسخة الكمبيوتر">نسخة الكمبيوتر</span>
+            </a>
+        </div>
+    </section>
+
+    <!-- Icons Section -->
+    <section class="icons-section">
+        <div class="container">
+            <h2 class="section-title lang-element fade-in" data-en="Study Features" data-ar="مميزات الدراسة">مميزات الدراسة</h2>
+            
+            <div class="icons-grid">
+                <div class="icon-card fade-in delay-1">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="lang-element" data-en="Pomodoro Timer" data-ar="مؤقت بومودورو">مؤقت بومودورو</h3>
+                    <p class="lang-element" data-en="25/5 minute intervals for maximum productivity" data-ar="فترات 25/5 دقيقة لأقصى إنتاجية">فترات 25/5 دقيقة لأقصى إنتاجية</p>
+                </div>
+                
+                <div class="icon-card fade-in delay-2">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3 class="lang-element" data-en="Focus Mode" data-ar="وضع التركيز">وضع التركيز</h3>
+                    <p class="lang-element" data-en="Eliminate distractions and boost concentration" data-ar="تخلص من المشتتات وعزز تركيزك">تخلص من المشتتات وعزز تركيزك</p>
+                </div>
+                
+                <div class="icon-card fade-in delay-3">
+                    <div class="icon-wrapper">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3 class="lang-element" data-en="Progress Tracking" data-ar="متابعة التقدم">متابعة التقدم</h3>
+                    <p class="lang-element" data-en="Track your study sessions and achievements" data-ar="تابع جلسات دراستك وإنجازاتك">تابع جلسات دراستك وإنجازاتك</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <div class="container">
+            <h2 class="section-title lang-element fade-in" data-en="Contact Me" data-ar="تواصل معايا">تواصل معايا</h2>
+            
+            <div class="contact-links">
+                <a href="https://wa.me/201234567890" class="contact-link fade-in delay-1" target="_blank">
+                    <div class="contact-icon">
+                        <i class="fab fa-whatsapp"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3 class="lang-element" data-en="WhatsApp" data-ar="واتساب">واتساب</h3>
+                        <p class="lang-element" data-en="Direct message on WhatsApp" data-ar="رسالة مباشرة على واتساب">رسالة مباشرة على واتساب</p>
+                    </div>
+                </a>
+                
+                <a href="https://instagram.com/karzocode" class="contact-link fade-in delay-2" target="_blank">
+                    <div class="contact-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3 class="lang-element" data-en="Instagram" data-ar="إنستجرام">إنستجرام</h3>
+                        <p class="lang-element" data-en="Follow on Instagram" data-ar="تابعنا على إنستجرام">تابعنا على إنستجرام</p>
+                    </div>
+                </a>
+                
+                <a href="https://t.me/karzocode" class="contact-link fade-in delay-3" target="_blank">
+                    <div class="contact-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3 class="lang-element" data-en="Telegram" data-ar="تلجرام">تلجرام</h3>
+                        <p class="lang-element" data-en="Join Telegram channel" data-ar="انضم لقناة تلجرام">انضم لقناة تلجرام</p>
+                    </div>
+                </a>
+                
+                <a href="mailto:karim@karzocode.com" class="contact-link fade-in delay-1">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3 class="lang-element" data-en="Email" data-ar="البريد الإلكتروني">البريد الإلكتروني</h3>
+                        <p class="lang-element" data-en="Send an email directly" data-ar="أرسل إيميل مباشر">أرسل إيميل مباشر</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-brand">Karzo Code — Eng.Kariem Tamer</div>
+            <p class="footer-copyright lang-element" data-en="© 2026 All rights reserved. Designed for ultimate focus and productivity." data-ar="© 2026 جميع الحقوق محفوظة. مصمم لأقصى درجات التركيز والإنتاجية.">© 2026 جميع الحقوق محفوظة. مصمم لأقصى درجات التركيز والإنتاجية.</p>
+        </div>
+    </footer>
+
+    <script>
+        // إنشاء أيقونات طافية في الخلفية
+        function createFloatingIcons() {
+            const background = document.getElementById('backgroundAnimation');
+            const icons = [
+                'fas fa-book', 'fas fa-brain', 'fas fa-clock', 'fas fa-graduation-cap',
+                'fas fa-lightbulb', 'fas fa-pencil-alt', 'fas fa-star', 'fas fa-trophy',
+                'fas fa-bolt', 'fas fa-chart-line', 'fas fa-music', 'fas fa-code'
+            ];
+            
+            for (let i = 0; i < 30; i++) {
+                const icon = document.createElement('i');
+                icon.className = `floating-icon ${icons[Math.floor(Math.random() * icons.length)]}`;
+                
+                // مواضع عشوائية
+                icon.style.left = `${Math.random() * 100}%`;
+                icon.style.fontSize = `${Math.random() * 20 + 15}px`;
+                icon.style.animationDelay = `${Math.random() * 10}s`;
+                
+                background.appendChild(icon);
+            }
+        }
+
+        // Language Management
+        document.addEventListener('DOMContentLoaded', function() {
+            // إنشاء أيقونات الخلفية المتحركة
+            createFloatingIcons();
+            
+            // Get language buttons
+            const langArBtn = document.getElementById('lang-ar');
+            const langEnBtn = document.getElementById('lang-en');
+            const langElements = document.querySelectorAll('.lang-element');
+            
+            // Check saved language preference
+            const savedLang = localStorage.getItem('studyModeLang') || 'ar';
+            
+            // Set initial language
+            setLanguage(savedLang);
+            updateLangButtons(savedLang);
+            
+            // Arabic button click
+            langArBtn.addEventListener('click', function() {
+                setLanguage('ar');
+                updateLangButtons('ar');
+                localStorage.setItem('studyModeLang', 'ar');
+            });
+            
+            // English button click
+            langEnBtn.addEventListener('click', function() {
+                setLanguage('en');
+                updateLangButtons('en');
+                localStorage.setItem('studyModeLang', 'en');
+            });
+            
+            // Set language function
+            function setLanguage(lang) {
+                const isArabic = lang === 'ar';
+                
+                // Update HTML direction
+                document.body.dir = isArabic ? 'rtl' : 'ltr';
+                document.body.lang = lang;
+                
+                // Update all language elements
+                langElements.forEach(element => {
+                    const text = element.getAttribute(`data-${lang}`);
+                    if (text) {
+                        element.textContent = text;
+                    }
+                });
+            }
+            
+            // Update language buttons
+            function updateLangButtons(activeLang) {
+                if (activeLang === 'ar') {
+                    langArBtn.classList.add('active');
+                    langEnBtn.classList.remove('active');
+                } else {
+                    langEnBtn.classList.add('active');
+                    langArBtn.classList.remove('active');
+                }
+            }
+            
+            // Version Buttons Functionality
+            const mobileBtn = document.getElementById('mobile-version');
+            const desktopBtn = document.getElementById('desktop-version');
+            
+            mobileBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(this.querySelector('.lang-element').textContent + ' - رابط النسخة الموبايل');
+                // window.location.href = 'mobile-version.html';
+            });
+            
+            desktopBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                alert(this.querySelector('.lang-element').textContent + ' - رابط نسخة الكمبيوتر');
+                // window.location.href = 'desktop-version.html';
+            });
+            
+            // Add hover effects
+            const interactiveElements = document.querySelectorAll('.contact-link, .version-btn, .icon-card');
+            interactiveElements.forEach(element => {
+                element.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-8px)';
+                });
+                
+                element.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Add scroll animation
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all fade-in elements
+            document.querySelectorAll('.fade-in').forEach(element => {
+                observer.observe(element);
+            });
+            
+            // Initialize fade-in elements
+            document.querySelectorAll('.fade-in').forEach(element => {
+                element.style.opacity = '0';
+                element.style.transform = 'translateY(30px)';
+            });
+            
+            // Trigger initial animation for elements already in view
+            setTimeout(() => {
+                document.querySelectorAll('.fade-in').forEach(element => {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top < window.innerHeight && rect.bottom > 0) {
+                        element.classList.add('fade-in');
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    }
+                });
+            }, 100);
+        });
+    </script>
+</body>
+</html>
